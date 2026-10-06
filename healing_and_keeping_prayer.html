@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healing & Keeping Prayer</title>
+<style>
+:root{
+  --ink:#263449; --muted:#667085; --gold:#d2a84a; --gold2:#f6df9b;
+  --white:rgba(255,255,255,.91); --shadow:0 22px 70px rgba(42,67,100,.20);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+  line-height:1.85;min-height:100vh;overflow-x:hidden;position:relative;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,255,255,.90),transparent 28%),
+    radial-gradient(circle at 85% 18%,rgba(255,240,190,.38),transparent 25%),
+    url("healing.jpg") center top / cover no-repeat;
+}
+body:before{
+  content:"";position:fixed;inset:-15%;z-index:-4;pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.95) 0 3px,transparent 4px),
+    radial-gradient(circle at 72% 30%,rgba(255,255,255,.8) 0 2px,transparent 3px),
+    radial-gradient(circle at 45% 75%,rgba(255,220,135,.55) 0 2px,transparent 3px),
+    radial-gradient(circle at 88% 80%,rgba(255,255,255,.9) 0 3px,transparent 4px);
+  background-size:260px 240px,340px 310px,300px 280px,390px 350px;
+  animation:stars 24s linear infinite;
+}
+body:after{
+  content:"";position:fixed;inset:-15%;z-index:-3;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.42),transparent 45%),
+    radial-gradient(ellipse at 10% 85%,rgba(157,213,255,.18),transparent 40%),
+    radial-gradient(ellipse at 90% 65%,rgba(255,220,130,.18),transparent 42%);
+  filter:blur(12px);animation:glow 12s ease-in-out infinite alternate;
+}
+@keyframes stars{from{transform:translate3d(0,0,0)}to{transform:translate3d(-90px,70px,0)}}
+@keyframes glow{from{opacity:.65;transform:scale(1)}to{opacity:1;transform:scale(1.06)}}
+
+header{text-align:center;padding:34px 20px 18px;position:relative}
+.cross-wrap{
+  width:210px;height:210px;margin:0 auto 2px;position:relative;
+  display:grid;place-items:center;filter:drop-shadow(0 12px 25px rgba(180,130,35,.25));
+}
+.cross-wrap:before{
+  content:"";position:absolute;width:185px;height:185px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,236,167,.85),rgba(255,236,167,.18) 48%,transparent 72%);
+  animation:pulse 3.8s ease-in-out infinite;
+}
+.cross{
+  position:relative;color:#f4cf72;font-family:Georgia,serif;font-size:172px;
+  line-height:1;font-weight:400;text-shadow:
+    0 0 8px #fff4c5,0 0 25px rgba(255,218,115,.9),0 0 55px rgba(238,181,52,.6);
+  animation:crossGlow 3.5s ease-in-out infinite alternate;
+}
+@keyframes pulse{50%{transform:scale(1.13);opacity:.7}}
+@keyframes crossGlow{from{filter:brightness(.95)}to{filter:brightness(1.18)}}
+
+h1{margin:0;font-size:clamp(30px,5vw,48px);letter-spacing:.04em}
+.subtitle{color:var(--muted);font-family:Arial,sans-serif;font-size:14px;margin-top:8px}
+.tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 18px 24px}
+button{
+  border:0;border-radius:999px;padding:12px 20px;font:600 14px Arial,sans-serif;
+  cursor:pointer;background:white;color:var(--ink);box-shadow:0 5px 18px rgba(50,70,90,.12);
+  transition:transform .2s,box-shadow .2s,background .2s;
+}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(50,70,90,.17)}
+button.active,.primary{background:linear-gradient(135deg,#d2a84a,#b78324);color:white}
+main{max-width:900px;margin:auto;padding:0 18px 60px}
+.card{
+  background:var(--white);backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:clamp(24px,5vw,48px);
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.card:before{
+  content:"";position:absolute;top:0;left:8%;right:8%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold2),transparent);
+}
+.prayer{display:none}.prayer.active{display:block}
+.prayer h2{text-align:center;font-size:26px;margin:0 0 28px}
+.paragraph{margin:0 0 24px;font-size:clamp(17px,2.2vw,20px)}
+.word{display:inline;transition:background .08s,color .08s,text-shadow .08s,transform .08s}
+.word.active{
+  color:#9a6b12;background:linear-gradient(transparent 55%,rgba(244,211,112,.72) 55%);
+  text-shadow:0 0 10px rgba(235,183,55,.38);
+}
+.amen{text-align:center;font-weight:bold;color:#9b7326;font-size:21px;margin-top:32px}
+.controls{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px;
+  padding-top:22px;border-top:1px solid #eadfca
+}
+.status{text-align:center;color:var(--muted);font:13px Arial,sans-serif;margin-top:12px}
+.hint{text-align:center;color:var(--muted);font:12px Arial,sans-serif;margin-top:25px}
+@media(max-width:600px){
+  body{line-height:1.72}.header{padding-top:20px}.cross-wrap{width:160px;height:160px}
+  .cross{font-size:130px}.card{border-radius:20px;padding:24px 20px}.paragraph{font-size:17px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="cross-wrap"><div class="cross">✝</div></div>
+  <h1>Healing &amp; Keeping Prayer</h1>
+  <div class="subtitle">A prayer of faith, healing, peace and restoration</div>
+</header>
+
+<div class="tabs">
+  <button id="tabPersonal" class="active" onclick="showPrayer('personal')">My Personal Prayer</button>
+  <button id="tabForErwin" onclick="showPrayer('forErwin')">Prayer for Erwin Erickson</button>
+</div>
+
+<main>
+  <section class="card">
+
+    <article id="personal" class="prayer active">
+      <h2>Healing and Keeping Prayer — Personal</h2>
+
+      <p class="paragraph">My Loving Father, I thank you for loving me. Thank you for sending your Son, our Lord Jesus Christ into the world to save and to set me free. I trust in your power and grace that sustain and restore me.</p>
+
+      <p class="paragraph">Loving Father, touch me now with your healing hands. For I believe that your will is for me to be well in mind, body, soul and spirit. Cover me with the most precious blood of your Son, our Lord Jesus Christ from the top of my head to the soles of my feet. Cast out anything that should not be in me. Root out any unhealthy and abnormal cells and multiply my healthy cells. Open any blocked arteries or veins and rebuild and replenish any damaged areas. Remove all inflammation and cleanse any infection by the power of Jesus' precious blood. Let the fire of your healing love pass through my entire body to heal and to make new any diseased areas so that my body will function the way you created it to function. Touch also my mind and my emotion, even the deepest recesses of my heart. Saturate my entire being with your presence, love, joy, and peace and draw me ever closer to you every moment of my life.</p>
+
+      <p class="paragraph">And Father, fill me with your Holy Spirit and empower me to do your works so that my life will bring glory and honor to your holy name.</p>
+
+      <p class="paragraph">I ask this in the name of the Lord Jesus Christ, Amen.</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <article id="forErwin" class="prayer">
+      <h2>Healing and Keeping Prayer — For Erwin Erickson</h2>
+
+      <p class="paragraph">Our Loving Father, we thank you for loving Erwin Erickson. Thank you for sending your Son, our Lord Jesus Christ into the world to save and to set us free. We trust in your power and grace that sustain and restore Erwin Erickson.</p>
+
+      <p class="paragraph">Loving Father, touch Erwin Erickson now with your healing hands. For we believe that your will is for Erwin Erickson to be well in mind, body, soul and spirit. Cover Erwin Erickson with the most precious blood of your Son, our Lord Jesus Christ from the top of his head to the soles of his feet. Cast out anything that should not be in him. Root out any unhealthy and abnormal cells and multiply his healthy cells. Open any blocked arteries or veins and rebuild and replenish any damaged areas. Remove all inflammation and cleanse any infection by the power of Jesus' precious blood. Let the fire of your healing love pass through his entire body to heal and to make new any diseased areas so that his body will function the way you created it to function. Touch also his mind and his emotion, even the deepest recesses of his heart. Saturate his entire being with your presence, love, joy, and peace and draw him ever closer to you every moment of his life.</p>
+
+      <p class="paragraph">And Father, fill him with your Holy Spirit and empower him to do your works so that his life will bring glory and honor to your holy name.</p>
+
+      <p class="paragraph">We ask this in the name of the Lord Jesus Christ, Amen.</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <div class="controls">
+      <button class="primary" onclick="speakPrayer()">▶ Read Prayer Aloud</button>
+      <button onclick="pauseSpeech()">Ⅱ Pause</button>
+      <button onclick="stopSpeech()">■ Stop</button>
+      <button onclick="changeSpeed()">Speed: <span id="speedLabel">1×</span></button>
+    </div>
+    <div id="status" class="status">Ready to read aloud</div>
+    <div class="hint">Text-to-speech uses your browser's available voice. For a more natural voice, choose a preferred English voice in your browser or operating system.</div>
+  </section>
+</main>
+
+<script>
+let currentPrayer='personal', speed=1, utterance=null, wordTimer=null, words=[], wordIndex=0, pausedAt=0;
+
+function showPrayer(id){
+  stopSpeech(); currentPrayer=id;
+  document.querySelectorAll('.prayer').forEach(x=>x.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tabPersonal').classList.toggle('active',id==='personal');
+  document.getElementById('tabForErwin').classList.toggle('active',id==='forErwin');
+  prepareWords();
+  document.getElementById('status').textContent='Ready to read aloud';
+}
+
+function prepareWords(){
+  document.querySelectorAll('.word').forEach(w=>w.replaceWith(document.createTextNode(w.textContent)));
+  const el=document.getElementById(currentPrayer);
+  el.querySelectorAll('.paragraph').forEach(p=>{
+    const original=p.textContent;
+    p.innerHTML='';
+    const parts=original.split(/(\s+)/);
+    parts.forEach(part=>{
+      if(/\s+/.test(part)) p.appendChild(document.createTextNode(part));
+      else if(part) {
+        const span=document.createElement('span');
+        span.className='word'; span.textContent=part;
+        p.appendChild(span);
+      }
+    });
+  });
+}
+
+function getWords(){
+  return Array.from(document.querySelectorAll('#'+currentPrayer+' .word'));
+}
+
+function prayerText(){
+  const el=document.getElementById(currentPrayer);
+  return Array.from(el.querySelectorAll('.paragraph')).map(p=>p.textContent.trim()).join('\n\n');
+}
+
+function chooseVoice(){
+  const voices=speechSynthesis.getVoices();
+  return voices.find(v=>/en-US/i.test(v.lang)&&/Google|Microsoft|Samantha|Natural/i.test(v.name))
+    || voices.find(v=>/en-US/i.test(v.lang))
+    || voices.find(v=>/^en/i.test(v.lang)) || null;
+}
+
+function clearHighlight(){
+  getWords().forEach(w=>w.classList.remove('active'));
+}
+
+function highlightNext(){
+  if(wordIndex>=words.length){ clearInterval(wordTimer); return; }
+  clearHighlight();
+  const w=words[wordIndex++];
+  w.classList.add('active');
+  w.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function startWordAnimation(){
+  // Boundary events from SpeechSynthesis provide the actual spoken character
+  // position. The animation is driven by onboundary below rather than a timer.
+  words=getWords(); clearHighlight();
+}
+
+function highlightByCharIndex(charIndex){
+  if(!words.length) words=getWords();
+  let running=0, target=null, targetIndex=-1;
+
+  for(let i=0;i<words.length;i++){
+    const word=words[i].textContent;
+    const start=running;
+    const end=start+word.length;
+    if(charIndex>=start && charIndex<=end){
+      target=words[i]; targetIndex=i; break;
+    }
+    running=end+1;
+  }
+
+  if(target){
+    clearHighlight();
+    target.classList.add('active');
+    target.scrollIntoView({behavior:'smooth',block:'center'});
+    wordIndex=targetIndex+1;
+  }
+}
+
+function speakPrayer(){
+  if(!('speechSynthesis' in window)){
+    document.getElementById('status').textContent='Text-to-speech is not supported in this browser.'; return;
+  }
+
+  speechSynthesis.cancel();
+  clearInterval(wordTimer);
+  clearHighlight();
+
+  utterance=new SpeechSynthesisUtterance(prayerText());
+  utterance.lang='en-US';
+  utterance.rate=speed;
+  utterance.pitch=.9;
+  utterance.volume=1;
+
+  const voice=chooseVoice();
+  if(voice) utterance.voice=voice;
+
+  utterance.onstart=()=>{
+    words=getWords();
+    wordIndex=0;
+    document.getElementById('status').textContent='Reading prayer aloud…';
+  };
+
+  // This is the important part: use the browser's actual speech boundary
+  // instead of estimating word timing.
+  utterance.onboundary=(event)=>{
+    if(event.name==='word' || typeof event.charIndex==='number'){
+      highlightByCharIndex(event.charIndex);
+    }
+  };
+
+  utterance.onend=()=>{
+    clearInterval(wordTimer);
+    clearHighlight();
+    document.getElementById('status').textContent='Prayer finished';
+  };
+
+  utterance.onerror=()=>{
+    clearInterval(wordTimer);
+    clearHighlight();
+    document.getElementById('status').textContent='Unable to play the prayer with the selected voice.';
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+function pauseSpeech(){
+  if(!('speechSynthesis' in window))return;
+
+  if(speechSynthesis.speaking&&!speechSynthesis.paused){
+    speechSynthesis.pause();
+    document.getElementById('status').textContent='Paused';
+  }else if(speechSynthesis.paused){
+    speechSynthesis.resume();
+    document.getElementById('status').textContent='Reading prayer aloud…';
+  }
+}
+
+function stopSpeech(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  clearInterval(wordTimer);
+  clearHighlight();
+  wordIndex=0;
+  if(document.getElementById('status'))
+    document.getElementById('status').textContent='Stopped';
+}
+
+function changeSpeed(){
+  speed=speed===1?.85:speed===.85?.7:1;
+  document.getElementById('speedLabel').textContent=speed+'×';
+  if(speechSynthesis.speaking)speakPrayer();
+}
+
+prepareWords();
+if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{};
+</script>
+</body>
+</html>
