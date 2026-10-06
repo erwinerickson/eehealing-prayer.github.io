@@ -110,6 +110,11 @@ main{max-width:900px;margin:auto;padding:0 18px 60px}
 <div class="tabs">
   <button id="tabPersonal" class="active" onclick="showPrayer('personal')">My Personal Prayer</button>
   <button id="tabForErwin" onclick="showPrayer('forErwin')">Prayer for Erwin Erickson</button>
+  <button id="tabAkuArap" onclick="showPrayer('forAkuArap')">Aku Arap</button>
+  <button id="tabApai" onclick="showPrayer('forApai')">Apai Kami</button>
+  <button id="tabMaria" onclick="showPrayer('forSanteMaria')">Sante Maria</button>
+  <button id="tabFatima" onclick="showPrayer('forSembiangFatima')">Sembiang Fatima</button>
+  <button id="tabKemuliaan" onclick="showPrayer('forKemuliaan')">Kemuliaan</button>
 </div>
 
 <main>
@@ -141,6 +146,65 @@ main{max-width:900px;margin:auto;padding:0 18px 60px}
       <div class="amen">✦ Amen ✦</div>
     </article>
 
+    <article id="forAkuArap" class="prayer">
+      <h2>Aku Arap</h2>
+
+      <p class="paragraph">Aku arap ka Allah Taala, Apai ti pemadu bekuasa</p>
+      <p class="paragraph">Ti ngaga serega enggau dunya</p>
+      <p class="paragraph">Aku arapka Jesus Kristus, Anak tunggal iya, Tuhan kitai</p>
+      <p class="paragraph">Dikandung ari Roh Kudus, diadaka Maria Dara tuchi</p>
+      <p class="paragraph">Merinsa rambau Pontius Pilatus, diregang, parai lalu ditumbak</p>
+      <p class="paragraph">Iya nurun ngagai sebayan, udah tiga ari iya angkat idup baru</p>
+      <p class="paragraph">Iya niki ke menua serega, lalu duduk sepiak kanan Allah Taala</p>
+      <p class="paragraph">Iya deka datai baru ngabas urang ti idup ngau urang ti udah mati</p>
+      <p class="paragraph">Aku arap ke Roh Kudus, Gerija katolik ti kudus</p>
+      <p class="paragraph">Saum urang Sante, pengampun dosa, pengangkat tubuh, enggau pengidup ti meruan</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <article id="forApai" class="prayer">
+      <h2>Sampi Apai Kami</h2>
+
+      <p class="paragraph">Apai kami ti di Serga, asoh tampak nama Nuan, datai meh perintah Nuan</p>
+      <p class="paragraph">Jadi meh peneka Nuan, di dunya baka di serga.</p>
+      <p class="paragraph">Beri kami saritu, numbas pemakai kami</p>
+      <p class="paragraph">Ampun semua penyalah kami, baka kami ngampun urang ti besalah ngelaban kami</p>
+      <p class="paragraph">Anang ngasuh kami kena penguji, tang ibun kami ari semua penyai.</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <article id="forSanteMaria" class="prayer">
+      <h2>Tabi Maria</h2>
+
+      <p class="paragraph">Tabi ke nuan Maria</p>
+      <p class="paragraph">Ti penuh ulih nimet, Allah Taala sejalai ngau Nuan</p>
+      <p class="paragraph">Nuan lebih beberekat ari semua indu, lalu beberekat ke anak nuan Jesus</p>
+      <p class="paragraph">O Maria Ti kudus, indai Allah Taala </p>
+      <p class="paragraph">Kami urang ti besalah, minta nuan besembiang ke kami diatu nyentuk ke kami parai ila</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <article id="forSembiangFatima" class="prayer">
+      <h2>Sembiang Fatima</h2>
+
+      <p class="paragraph">O Tuhan Yesus</p>
+      <p class="paragraph">Ampun semua penyalah kami</p>
+      <p class="paragraph">Jaga aku ari api neraka</p>
+      <p class="paragraph">Bai semua semengat ke menua serega</p>
+      <p class="paragraph">Kelebih agi sida ke beguna bendar pengasih nuan</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
+    <article id="forKemuliaan" class="prayer">
+      <h2>Puji ke Apai</h2>
+
+      <p class="paragraph">Puji ke Apai</p>
+      <p class="paragraph">Enggau Anak</p>
+      <p class="paragraph">Enggau Roh Kudus</p>
+      <p class="paragraph">Baka mula kelia, diatu, lalu datai ke selama-lama iya</p>
+      <div class="amen">✦ Amen ✦</div>
+    </article>
+
     <div class="controls">
       <button class="primary" onclick="speakPrayer()">▶ Read Prayer Aloud</button>
       <button onclick="pauseSpeech()">Ⅱ Pause</button>
@@ -148,7 +212,6 @@ main{max-width:900px;margin:auto;padding:0 18px 60px}
       <button onclick="changeSpeed()">Speed: <span id="speedLabel">1×</span></button>
     </div>
     <div id="status" class="status">Ready to read aloud</div>
-    <div class="hint">Text-to-speech uses your browser's available voice. For a more natural voice, choose a preferred English voice in your browser or operating system.</div>
   </section>
 </main>
 
@@ -161,6 +224,11 @@ function showPrayer(id){
   document.getElementById(id).classList.add('active');
   document.getElementById('tabPersonal').classList.toggle('active',id==='personal');
   document.getElementById('tabForErwin').classList.toggle('active',id==='forErwin');
+  document.getElementById('tabAkuArap').classList.toggle('active',id==='forAkuArap');
+  document.getElementById('tabForApai').classList.toggle('active',id==='forApai');
+  document.getElementById('tabMaria').classList.toggle('active',id==='forSanteMaria');
+  document.getElementById('tabFatima').classList.toggle('active',id==='forSembiangFatima');
+  document.getElementById('tabKemuliaan').classList.toggle('active',id==='forKemuliaan');
   prepareWords();
   document.getElementById('status').textContent='Ready to read aloud';
 }
