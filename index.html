@@ -82,11 +82,6 @@ main{max-width:900px;margin:auto;padding:0 18px 60px}
 .prayer{display:none}.prayer.active{display:block}
 .prayer h2{text-align:center;font-size:26px;margin:0 0 28px}
 .paragraph{margin:0 0 24px;font-size:clamp(17px,2.2vw,20px)}
-.word{display:inline;transition:background .08s,color .08s,text-shadow .08s,transform .08s}
-.word.active{
-  color:#9a6b12;background:linear-gradient(transparent 55%,rgba(244,211,112,.72) 55%);
-  text-shadow:0 0 10px rgba(235,183,55,.38);
-}
 .amen{text-align:center;font-weight:bold;color:#9b7326;font-size:21px;margin-top:32px}
 .controls{
   display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px;
@@ -209,14 +204,14 @@ main{max-width:900px;margin:auto;padding:0 18px 60px}
       <button class="primary" onclick="speakPrayer()">▶ Read Prayer Aloud</button>
       <button onclick="pauseSpeech()">Ⅱ Pause</button>
       <button onclick="stopSpeech()">■ Stop</button>
-      <button onclick="changeSpeed()">Speed: <span id="speedLabel">1×</span></button>
+      <button onclick="changeSpeed()">Speed: <span id="speedLabel">.6</span></button>
     </div>
     <div id="status" class="status">Ready to read aloud</div>
   </section>
 </main>
 
 <script>
-let currentPrayer='personal', speed=.65, utterance=null, wordTimer=null, words=[], wordIndex=0, pausedAt=0;
+let currentPrayer='personal', speed=.6, utterance=null;
 
 function showPrayer(id){
   stopSpeech(); currentPrayer=id;
@@ -225,35 +220,14 @@ function showPrayer(id){
   document.getElementById('tabPersonal').classList.toggle('active',id==='personal');
   document.getElementById('tabForErwin').classList.toggle('active',id==='forErwin');
   document.getElementById('tabAkuArap').classList.toggle('active',id==='forAkuArap');
-  document.getElementById('tabForApai').classList.toggle('active',id==='forApai');
+  document.getElementById('tabApai').classList.toggle('active',id==='forApai');
   document.getElementById('tabMaria').classList.toggle('active',id==='forSanteMaria');
   document.getElementById('tabFatima').classList.toggle('active',id==='forSembiangFatima');
   document.getElementById('tabKemuliaan').classList.toggle('active',id==='forKemuliaan');
-  prepareWords();
   document.getElementById('status').textContent='Ready to read aloud';
 }
 
-function prepareWords(){
-  document.querySelectorAll('.word').forEach(w=>w.replaceWith(document.createTextNode(w.textContent)));
-  const el=document.getElementById(currentPrayer);
-  el.querySelectorAll('.paragraph').forEach(p=>{
-    const original=p.textContent;
-    p.innerHTML='';
-    const parts=original.split(/(\s+)/);
-    parts.forEach(part=>{
-      if(/\s+/.test(part)) p.appendChild(document.createTextNode(part));
-      else if(part) {
-        const span=document.createElement('span');
-        span.className='word'; span.textContent=part;
-        p.appendChild(span);
-      }
-    });
-  });
-}
 
-function getWords(){
-  return Array.from(document.querySelectorAll('#'+currentPrayer+' .word'));
-}
 
 function prayerText(){
   const el=document.getElementById(currentPrayer);
@@ -267,45 +241,9 @@ function chooseVoice(){
     || voices.find(v=>/^en/i.test(v.lang)) || null;
 }
 
-function clearHighlight(){
-  getWords().forEach(w=>w.classList.remove('active'));
-}
 
-function highlightNext(){
-  if(wordIndex>=words.length){ clearInterval(wordTimer); return; }
-  clearHighlight();
-  const w=words[wordIndex++];
-  w.classList.add('active');
-  w.scrollIntoView({behavior:'smooth',block:'center'});
-}
 
-function startWordAnimation(){
-  // Boundary events from SpeechSynthesis provide the actual spoken character
-  // position. The animation is driven by onboundary below rather than a timer.
-  words=getWords(); clearHighlight();
-}
 
-function highlightByCharIndex(charIndex){
-  if(!words.length) words=getWords();
-  let running=0, target=null, targetIndex=-1;
-
-  for(let i=0;i<words.length;i++){
-    const word=words[i].textContent;
-    const start=running;
-    const end=start+word.length;
-    if(charIndex>=start && charIndex<=end){
-      target=words[i]; targetIndex=i; break;
-    }
-    running=end+1;
-  }
-
-  if(target){
-    clearHighlight();
-    target.classList.add('active');
-    target.scrollIntoView({behavior:'smooth',block:'center'});
-    wordIndex=targetIndex+1;
-  }
-}
 
 function speakPrayer(){
   if(!('speechSynthesis' in window)){
@@ -313,8 +251,6 @@ function speakPrayer(){
   }
 
   speechSynthesis.cancel();
-  clearInterval(wordTimer);
-  clearHighlight();
 
   utterance=new SpeechSynthesisUtterance(prayerText());
   utterance.lang='en-US';
@@ -326,28 +262,13 @@ function speakPrayer(){
   if(voice) utterance.voice=voice;
 
   utterance.onstart=()=>{
-    words=getWords();
-    wordIndex=0;
     document.getElementById('status').textContent='Reading prayer aloud…';
   };
-
-  // This is the important part: use the browser's actual speech boundary
-  // instead of estimating word timing.
-  utterance.onboundary=(event)=>{
-    if(event.name==='word' || typeof event.charIndex==='number'){
-      highlightByCharIndex(event.charIndex);
-    }
-  };
-
   utterance.onend=()=>{
-    clearInterval(wordTimer);
-    clearHighlight();
     document.getElementById('status').textContent='Prayer finished';
   };
 
   utterance.onerror=()=>{
-    clearInterval(wordTimer);
-    clearHighlight();
     document.getElementById('status').textContent='Unable to play the prayer with the selected voice.';
   };
 
@@ -368,20 +289,15 @@ function pauseSpeech(){
 
 function stopSpeech(){
   if('speechSynthesis' in window)speechSynthesis.cancel();
-  clearInterval(wordTimer);
-  clearHighlight();
-  wordIndex=0;
   if(document.getElementById('status'))
     document.getElementById('status').textContent='Stopped';
 }
 
 function changeSpeed(){
-  speed=speed===1?.85:speed===.85?.7:1;
+  speed = speed === .6 ? .75 : .6;
   document.getElementById('speedLabel').textContent=speed+'×';
   if(speechSynthesis.speaking)speakPrayer();
 }
-
-prepareWords();
 if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{};
 </script>
 </body>
