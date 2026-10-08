@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Healing & Keeping Prayer</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>
 :root{
   --ink:#263449; --muted:#667085; --gold:#d2a84a; --gold2:#f6df9b;
@@ -61,7 +61,22 @@ header{text-align:center;padding:34px 20px 18px;position:relative}
 @keyframes crossGlow{from{filter:brightness(.95)}to{filter:brightness(1.18)}}
 
 h1{margin:0;font-size:clamp(30px,5vw,48px);letter-spacing:.04em}
-.subtitle{color:var(--muted);font-family:Arial,sans-serif;font-size:14px;margin-top:8px}
+.subtitle {
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin-top: 8px;
+  animation: blink2 1.5s ease-in-out infinite;
+}
+
+@keyframes blink2 {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
 .tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:0 18px 24px}
 button{
   border:0;border-radius:999px;padding:12px 20px;font:600 14px Arial,sans-serif;
